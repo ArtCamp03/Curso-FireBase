@@ -1,14 +1,14 @@
 package br.arc_camp.firebaseactivity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import br.arc_camp.firebaseactivity.databinding.ActivityAberturaBinding
+import com.br.jafapps.bdfirestore.util.DialogProgress
 import com.br.jafapps.bdfirestore.util.Util
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.math.log
 
 class AberturaActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -24,6 +24,23 @@ class AberturaActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonLogin.setOnClickListener(this)
 
         auth = FirebaseAuth.getInstance()
+
+        val user = auth?.currentUser
+
+        // usuario que ja foi logado
+        if(user != null){
+            finish()
+
+            /*
+            // recupera informaçoes do usuarios logado
+            user.email
+            user.uid
+             */
+
+            Toast.makeText(this,"Sucesso ao logar !!", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this,MainActivity::class.java))
+
+        }
 
         supportActionBar?.hide()
     }
@@ -59,15 +76,24 @@ class AberturaActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun login(email: String, senha: String){
 
+        val dialogoProgress = DialogProgress()
+        dialogoProgress.show(supportFragmentManager, "1")
+
         // cria usaurios com email e senha
         //auth.createUserWithEmailAndPassword(email,senha)
 
         auth.signInWithEmailAndPassword(email,senha).addOnSuccessListener {
+            dialogoProgress.dismiss()
+
+            finish()
 
             // executa comandos se houver sucesso
             Toast.makeText(this,"Sucesso ao logar !!", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this,MainActivity::class.java))
 
         }.addOnFailureListener{ err ->
+
+            dialogoProgress.dismiss()
             // executa comandos se houver falha
 
             // tratar erro do firebase
