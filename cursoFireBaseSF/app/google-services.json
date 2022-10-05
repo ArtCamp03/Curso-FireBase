@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "940379014071",
+    "project_id": "fir-cursosf-405c5",
+    "storage_bucket": "fir-cursosf-405c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940379014071:android:15f2504b82527ebf2b1e32",
+        "android_client_info": {
+          "package_name": "br.arc_camp.firebaseactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940379014071-l15n0lee2g8tvsddeqgfbpdr4lt3kke7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFai__k3eckaPs18QqX-1xLAIhrOLuQ5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940379014071-l15n0lee2g8tvsddeqgfbpdr4lt3kke7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
