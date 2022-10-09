@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="br.arc_camp.firebaseactivity">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -19,18 +19,35 @@
         android:theme="@style/Theme.FireBaseActivity"
         tools:targetApi="31">
         <activity
+            android:name=".storage.StorageUploadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".storage.StorageDownloadActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".AberturaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.sample.MyFileProvider"
+            android:authorities="br.arc_camp.firebaseactivity"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="provider" />
+
+        </provider>
+
     </application>
 
 </manifest>

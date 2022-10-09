@@ -7,13 +7,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.arc_camp.firebaseactivity.databinding.ActivityMainBinding
+import br.arc_camp.firebaseactivity.storage.StorageDownloadActivity
+import br.arc_camp.firebaseactivity.storage.StorageUploadActivity
 import com.br.jafapps.bdfirestore.util.Util
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,60 +39,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v.id){
-
-            R.id.cadView_main_logout -> {
-                finish()
-                // desloga o usuario do Firebase
-                Firebase.auth.signOut()
-                startActivity(Intent(this, AberturaActivity::class.java))
-            }
-
-            R.id.cadView_main_download_img -> {
-                finish()
-                // desloga o usuario do Firebase
-                Firebase.auth.signOut()
-                startActivity(Intent(this, AberturaActivity::class.java))
-            }
-
-            R.id.cadView_main_upload_img -> {
-                finish()
-                // desloga o usuario do Firebase
-                Firebase.auth.signOut()
-                startActivity(Intent(this, AberturaActivity::class.java))
-            }
-
-            R.id.cadView_main_ler_dados -> {
-                finish()
-                // desloga o usuario do Firebase
-                Firebase.auth.signOut()
-                startActivity(Intent(this, AberturaActivity::class.java))
-            }
-
-            R.id.cadView_main_categorias -> {
-                finish()
-                // desloga o usuario do Firebase
-                Firebase.auth.signOut()
-                startActivity(Intent(this, AberturaActivity::class.java))
-            }
-
-            R.id.cadView_main_gravarAlterarRemover -> {
-                finish()
-                // desloga o usuario do Firebase
-                Firebase.auth.signOut()
-                startActivity(Intent(this, AberturaActivity::class.java))
-            }
+        if (v.id == R.id.cadView_main_logout) {
+            finish()
+            // desloga o usuario do Firebase
+            Firebase.auth.signOut()
+            startActivity(Intent(this, AberturaActivity::class.java))
+        } else if (v.id == R.id.cadView_main_download_img) {
+            startActivity(Intent(this, StorageDownloadActivity::class.java))
+        } else if (v.id == R.id.cadView_main_upload_img) {
+            startActivity(Intent(this, StorageUploadActivity::class.java))
+        } else if (v.id == R.id.cadView_main_ler_dados) {
+            startActivity(Intent(this, AberturaActivity::class.java))
+        } else if (v.id == R.id.cadView_main_categorias) {
+            startActivity(Intent(this, AberturaActivity::class.java))
+        } else if (v.id == R.id.cadView_main_gravarAlterarRemover) {
+            startActivity(Intent(this, AberturaActivity::class.java))
         }
 
     }
 
     // feedback da resposta de permissoes
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        for(result in grantResults){
-            if(result == PackageManager.PERMISSION_DENIED){
-                Util.exibirToast(baseContext, "Aceite as permissoes para o app funcionar corretamente !!")
+        for (result in grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                Util.exibirToast(
+                    baseContext, "Aceite as permissoes para o app funcionar corretamente !!"
+                )
                 finish()
                 break
             }
@@ -99,21 +79,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-
     // sempre escutara a respsota do Firebase
-    private fun listenAuthentic(){
+    private fun listenAuthentic() {
         Firebase.auth.addAuthStateListener { authentication ->
 
-            if(authentication.currentUser != null){
+            if (authentication.currentUser != null) {
                 Util.exibirToast(baseContext, "Usuarios logado")
-            }else{
+            } else {
                 Util.exibirToast(baseContext, "Usuarios deslogado")
             }
 
         }
     }
 
-    private fun permission(){
+    private fun permission() {
         val permissoes = arrayOf<String>(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,

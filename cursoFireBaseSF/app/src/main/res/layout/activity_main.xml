@@ -26,8 +26,8 @@
                 android:layout_width="280dp"
                 android:layout_height="70dp"
                 android:backgroundTint="#32CD32"
-                app:cardCornerRadius="1dp"
                 android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="1dp"
                 app:cardElevation="3dp"
                 app:cardUseCompatPadding="true">
 
@@ -71,8 +71,8 @@
                 android:id="@+id/cadView_main_ler_dados"
                 android:layout_width="280dp"
                 android:layout_height="70dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:backgroundTint="#32CD32"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="1dp"
                 app:cardElevation="3dp"
                 app:cardUseCompatPadding="true">
@@ -117,8 +117,8 @@
                 android:id="@+id/cadView_main_categorias"
                 android:layout_width="280dp"
                 android:layout_height="70dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:backgroundTint="#32CD32"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="1dp"
                 app:cardElevation="3dp"
                 app:cardUseCompatPadding="true">

@@ -3,9 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/drawable/ic_camera.xml" value="0.1575" />
+        <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/drawable/ic_gallery_img.xml" value="0.1335" />
         <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/layout/activity_abertura.xml" value="0.25" />
         <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/layout/activity_storage_download.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/layout/activity_storage_upload.xml" value="0.25" />
         <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/layout/dialog_progress.xml" value="0.25" />
+        <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/menu/menu_storage_upload.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/artur/Documents/MyProjects/FireBase/cursoFireBaseSF/app/src/main/res/xml/provider.xml" value="0.15833333333333333" />
       </map>
     </option>
   </component>
