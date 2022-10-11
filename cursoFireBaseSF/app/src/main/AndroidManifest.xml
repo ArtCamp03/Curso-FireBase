@@ -37,15 +37,13 @@
         </activity>
 
         <provider
-            android:name="com.sample.MyFileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="br.arc_camp.firebaseactivity"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="provider" />
-
+                android:resource="@xml/provider" />
         </provider>
 
     </application>
