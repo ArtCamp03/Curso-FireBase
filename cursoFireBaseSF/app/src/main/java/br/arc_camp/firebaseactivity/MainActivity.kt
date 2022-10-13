@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.arc_camp.firebaseactivity.databinding.ActivityMainBinding
+import br.arc_camp.firebaseactivity.firestore.FirestoreLerDadosActivity
 import br.arc_camp.firebaseactivity.storage.StorageDownloadActivity
 import br.arc_camp.firebaseactivity.storage.StorageUploadActivity
 import com.br.jafapps.bdfirestore.util.Util
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } else if (v.id == R.id.cadView_main_upload_img) {
             startActivity(Intent(this, StorageUploadActivity::class.java))
         } else if (v.id == R.id.cadView_main_ler_dados) {
-            startActivity(Intent(this, AberturaActivity::class.java))
+            startActivity(Intent(this, FirestoreLerDadosActivity::class.java))
         } else if (v.id == R.id.cadView_main_categorias) {
             startActivity(Intent(this, AberturaActivity::class.java))
         } else if (v.id == R.id.cadView_main_gravarAlterarRemover) {

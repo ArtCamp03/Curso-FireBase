@@ -19,6 +19,9 @@
         android:theme="@style/Theme.FireBaseActivity"
         tools:targetApi="31">
         <activity
+            android:name=".firestore.FirestoreLerDadosActivity"
+            android:exported="false" />
+        <activity
             android:name=".storage.StorageUploadActivity"
             android:exported="false" />
         <activity
@@ -32,6 +35,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -45,7 +49,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider" />
         </provider>
-
     </application>
 
 </manifest>

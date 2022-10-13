@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -28,18 +27,19 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.io.File
-import kotlin.math.log
 
 class StorageUploadActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityStorageUploadBinding
     private lateinit var uri_imagem: Uri
     private lateinit var storage: FirebaseStorage
+    private var cont = 0
 
     private val register = registerForActivityResult(
         ActivityResultContracts.TakePicturePreview()
@@ -287,7 +287,7 @@ class StorageUploadActivity : AppCompatActivity(), View.OnClickListener {
                 target: Target<Bitmap>?,
                 isFirstResource: Boolean
             ): Boolean {
-                Util.exibirToast(baseContext, "Falha ao diminuir da imagem: ${error.message.toString()}"
+                Util.exibirToast(baseContext, "Falha ao diminuir da imagem:")
                 return false
             }
 
@@ -308,7 +308,9 @@ class StorageUploadActivity : AppCompatActivity(), View.OnClickListener {
 
                 // local para armazenamento da imagem
                 //val reference = storage.reference.child("imagens").child("uploadImagem1.jpg")
-                val reference = storage.reference.child("imagens/uploadImagem2.jpg")
+                val uid = Firebase.auth.currentUser?.uid
+                val reference = storage.reference.child("arquivosUsuarios").child(uid.toString()).child("imagem"+ cont + ".jpg")
+                cont += 1
 
                 var uploadTask = reference.putBytes(data)
                 uploadTask.addOnSuccessListener {
