@@ -1,15 +1,22 @@
 package br.arc_camp.firebaseactivity.firestore
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import br.arc_camp.firebaseactivity.databinding.ActivityFirestoreLerDadosBinding
+import com.br.jafapps.bdfirestore.util.DialogProgress
 import com.br.jafapps.bdfirestore.util.Util
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 
 class FirestoreLerDadosActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityFirestoreLerDadosBinding
-    private lateinit var bd : FirebaseFirestore
+    private lateinit var binding: ActivityFirestoreLerDadosBinding
+    private lateinit var bd: FirebaseFirestore
+
+    private lateinit var reference = CollectionReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,12 +26,23 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
 
         bd = FirebaseFirestore.getInstance()
 
-        //ouvinte1()
+        // guarda toda informaçao referente a Gerentes
+        reference = bd.collection("Gerentes")
 
-        ouvinte2()
+        // ouvinte1()
+
+        // ouvinte2()
+
+        // ouvinte3()
+
+        // ouvinte4()
+
+        // ouvinte5()
+
+        ouvinte6()
 
         // jeito 1
-       //  var gerente = GerenteTeste("Antonio", 22, false)
+        //  var gerente = GerenteTeste("Antonio", 22, false)
 
         // jeito 2
         var gerente = Gerente("Antonio", 22, false)
@@ -33,11 +51,11 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
     }
 
     // 1ª opçao
-    private fun ouvinte1(){
+    private fun ouvinte1() {
 
         bd.collection("Gerentes").document("gerente0").get().addOnSuccessListener { documento ->
 
-            if(documento != null && documento.exists()){
+            if (documento != null && documento.exists()) {
 
                 // pega o nome da pasta onde esta os dados
                 val key = documento.id
@@ -51,11 +69,11 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
                 binding.firestoreIdade.setText("$idade")
                 binding.firestoreFumante.setText("$fumante")
 
-            }else{
+            } else {
                 Util.exibirToast(baseContext, "Erro ao ler Documento, esta vazio ou é inexistente")
             }
 
-        }.addOnFailureListener{ error ->
+        }.addOnFailureListener { error ->
             Util.exibirToast(baseContext, "Erro ao ler dados do servidor")
         }
 
@@ -90,11 +108,16 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
     }
 
     // 2ª opçao
-    private fun ouvinte2(){
+    private fun ouvinte2() {
+
+        val dialogProgress = DialogProgress()
+        dialogProgress.show(supportFragmentManager, "0")
 
         bd.collection("Gerentes").document("gerente0").get().addOnSuccessListener { documento ->
 
-            if(documento != null && documento.exists()){
+            dialogProgress.dismiss()
+
+            if (documento != null && documento.exists()) {
 
                 // pega o nome da pasta onde esta os dados
                 val key = documento.id
@@ -105,13 +128,171 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
                 binding.firestoreIdade.setText("${gerente?.idade}")
                 binding.firestoreFumante.setText("${gerente?.fumante}")
 
-            }else{
+            } else {
                 Util.exibirToast(baseContext, "Erro ao ler Documento, esta vazio ou é inexistente")
             }
 
-        }.addOnFailureListener{ error ->
+        }.addOnFailureListener { error ->
+            dialogProgress.dismiss()
             Util.exibirToast(baseContext, "Erro ao ler dados do servidor")
         }
 
     }
+
+    // 3ª opçao
+    private fun ouvinte3() {
+
+        val dialogProgress = DialogProgress()
+        dialogProgress.show(supportFragmentManager, "0")
+
+        var listaGerentes: MutableList<Gerente> = ArrayList<Gerente>();
+
+        bd.collection("Gerentes").get().addOnSuccessListener { documentos ->
+
+            dialogProgress.dismiss()
+
+            if (documentos != null) {
+                for (documento in documentos) {
+
+                    val key = documento.id
+                    /*
+                    val nome = documento.get("nome").toString()
+                    val idade = documento.get("idade").toString()
+                    val fumante = documento.get("fumante").toString()
+                     */
+
+                    val gerente = documento.toObject(Gerente::class.java)
+
+                    listaGerentes.add(gerente)
+
+                    //exibindo no LogCat
+                   // Log.d("www0r", "Nome pasta: ${key} -- Gerente nome: ${gerente.nome}  -- Idade: ${gerente.idade}"
+
+                }
+
+                binding.firestoreNome.setText("\n" + listaGerentes.get(0).nome)
+                binding.firestoreIdade.setText("${listaGerentes.get(0).idade}")
+                binding.firestoreFumante.setText("${listaGerentes.get(0).fumante}")
+
+                binding.firestoreNome2.setText("\n" + listaGerentes.get(1).nome)
+                binding.firestoreIdade2.setText("${listaGerentes.get(1).idade}")
+                binding.firestoreFumante2.setText("${listaGerentes.get(1).fumante}")
+
+            } else {
+                Util.exibirToast(baseContext, "Erro ao ler Documento, esta vazio ou é inexistente")
+            }
+
+        }.addOnFailureListener { error ->
+            dialogProgress.dismiss()
+            Util.exibirToast(baseContext, "Erro ao ler dados do servidor")
+        }
+
+    }
+
+    // 4ª opçao RECEBE DADOS EM TEMPO REAL
+    private fun ouvinte4() {
+        // obtem comunicaçao com Firebase e nao ocorre interrupçao
+        bd.collection("Gerentes").document("gerente0").addSnapshotListener{ documento, error ->
+            if(error != null){
+                Util.exibirToast(baseContext, "Erro na comunicaçao com servidor: ${error.message.toString()} !")
+            }else if(documento != null && documento.exists()){
+                val key = documento.id
+
+                val gerente = documento.toObject(Gerente::class.java)
+
+                binding.firestoreNome.setText(key + gerente?.nome)
+                binding.firestoreIdade.setText("${gerente?.idade}")
+                binding.firestoreFumante.setText("${gerente?.fumante}")
+            }else{
+                Util.exibirToast(baseContext, "Esta pasta nao existe ou esta vazia")
+            }
+
+        }
+
+    }
+
+    // 5ª opçao RECEBE DADOS EM TEMPO REAL
+    private fun ouvinte5() {
+
+        val dialogProgress = DialogProgress()
+        dialogProgress.show(supportFragmentManager, "0")
+
+        var listaGerentes: MutableList<Gerente> = ArrayList<Gerente>();
+
+        // obtem comunicaçao com Firebase e nao ocorre interrupçao
+        // escuta para todas as pastas
+        bd.collection("Gerentes").addSnapshotListener{ documentos, error ->
+            if(error != null){
+
+                dialogProgress.dismiss()
+                Util.exibirToast(baseContext, "Erro na comunicaçao com servidor: ${error.message.toString()} !")
+            }else if(documentos != null){
+                dialogProgress.dismiss()
+
+                // limpa lsita de informaçeos
+                listaGerentes.clear()
+                for (documento in documentos) {
+                    val key = documento.id
+                    val gerente = documento.toObject(Gerente::class.java)
+                    listaGerentes.add(gerente)
+                }
+                binding.firestoreNome.setText("\n" + listaGerentes.get(0).nome)
+                binding.firestoreIdade.setText("${listaGerentes.get(0).idade}")
+                binding.firestoreFumante.setText("${listaGerentes.get(0).fumante}")
+
+                binding.firestoreNome2.setText("\n" + listaGerentes.get(1).nome)
+                binding.firestoreIdade2.setText("${listaGerentes.get(1).idade}")
+                binding.firestoreFumante2.setText("${listaGerentes.get(1).fumante}")
+            }else{
+
+                dialogProgress.dismiss()
+                Util.exibirToast(baseContext, "Esta pasta nao existe ou esta vazia")
+            }
+
+        }
+    }
+
+
+    // 6ª opçao RECEBE DADOS EM TEMPO REAL
+    private fun ouvinte6() {
+        val dialogProgress = DialogProgress()
+        dialogProgress.show(supportFragmentManager, "0")
+
+        // obtem comunicaçao com Firebase e nao ocorre interrupçao
+        // escuta para todas as pastas
+        reference.addSnapshotListener{ documentos, error ->
+            if(error != null){
+                dialogProgress.dismiss()
+                Util.exibirToast(baseContext, "Erro na comunicaçao com servidor: ${error.message.toString()} !")
+            }else if(documentos != null){
+                dialogProgress.dismiss()
+                for(documento in documentos.documentChanges){
+                    when(documento.type){
+                        DocumentChange.Type.ADDED ->{
+                            val key = documento.document.id
+                            val gerente = documento.document.toObject(Gerente::class.java);
+                            Log.d("www0r", "ADDED - : ${key} -- Gerente nome: ${gerente.nome} ")
+
+                        }
+
+                        DocumentChange.Type.MODIFIED ->{
+                            val key = documento.document.id
+                            val gerente = documento.document.toObject(Gerente::class.java);
+                            Log.d("www0r", "MODIFIED - : ${key} -- Gerente nome: ${gerente.nome} ")
+                        }
+
+                        DocumentChange.Type.REMOVED ->{
+                            val key = documento.document.id
+                            val gerente = documento.document.toObject(Gerente::class.java);
+                            Log.d("www0r", "REMOVED - : ${key} -- Gerente nome: ${gerente.nome} ")
+                        }
+                    }
+                }
+            }else{
+                dialogProgress.dismiss()
+                Util.exibirToast(baseContext, "Esta pasta nao existe ou esta vazia")
+            }
+        }
+    }
+
 }
