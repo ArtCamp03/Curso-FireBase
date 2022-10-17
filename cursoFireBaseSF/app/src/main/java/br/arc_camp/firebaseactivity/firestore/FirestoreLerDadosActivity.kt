@@ -9,6 +9,7 @@ import com.br.jafapps.bdfirestore.util.Util
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 
 class FirestoreLerDadosActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFirestoreLerDadosBinding
     private lateinit var bd: FirebaseFirestore
 
-    private lateinit var reference = CollectionReference
+    private lateinit var reference : CollectionReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -258,9 +259,27 @@ class FirestoreLerDadosActivity : AppCompatActivity() {
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "0")
 
+        // responsavel pela consulta
+       // val query = reference!!.whereEqualTo("fumante", false)
+       // val query = reference!!.whereLessThan("idade", 10)
+        //val query = reference!!.whereGreaterThan("idade", 10)
+
+        // cira indice
+        // val query = reference!!.whereEqualTo("fumante", false).whereGreaterThan("idade", 10)
+
+        // ordena os campos
+        //val query = reference!!.orderBy("nome", Query.Direction.DESCENDING).limit(3)
+
+        // busca 3 documentos qe iniciam com a letra L
+       // val query = reference!!.orderBy("nome").startAt("L").limit(3)
+
+
+        // busca 3 documentos qe iniciam com a letra L
+        val query = reference!!.orderBy("nome").startAt("L").endAt("L"+ "\uf8ff").limit(3)
+
         // obtem comunicaçao com Firebase e nao ocorre interrupçao
         // escuta para todas as pastas
-        reference.addSnapshotListener{ documentos, error ->
+        query!!.addSnapshotListener{ documentos, error ->
             if(error != null){
                 dialogProgress.dismiss()
                 Util.exibirToast(baseContext, "Erro na comunicaçao com servidor: ${error.message.toString()} !")

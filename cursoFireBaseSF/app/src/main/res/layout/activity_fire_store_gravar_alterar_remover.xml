@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context=".firestore.FireStoreGravarAlterarRemoverActivity">
+
+    <EditText
+        android:id="@+id/edit_firestore_nome_pasta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="nome pasta:"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+
+    <EditText
+        android:id="@+id/edit_firestore_nome_gerente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="nome:"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+
+    <EditText
+        android:id="@+id/edit_firestore_idade_gerente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="idade:"
+        android:inputType="number"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_firestore_salvar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="salvar"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            />
+
+        <Button
+            android:id="@+id/button_firestore_alterar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="alterar"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            />
+
+        <Button
+            android:id="@+id/button_firestore_remover"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="remover"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
