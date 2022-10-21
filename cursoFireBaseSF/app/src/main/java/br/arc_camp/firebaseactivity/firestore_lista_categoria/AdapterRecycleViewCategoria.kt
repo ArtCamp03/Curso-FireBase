@@ -9,9 +9,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import br.arc_camp.firebaseactivity.R
 
-class AdapterRecycleViewCategoria(val context: Context, var categorias : ArrayList<Categoria>, var clickCategoria: ClickCategoria): RecyclerView.Adapter<AdapterRecycleViewCategoria.ViewHolder>() {
-
-
+class AdapterRecycleViewCategoria(val context: Context,
+                                  var categorias : ArrayList<Categoria>,
+                                  var clickCategoria: ClickCategoria,
+                                  var ultimoItemRecycleView: UltimoItemRecycleView):
+    RecyclerView.Adapter<AdapterRecycleViewCategoria.ViewHolder>() {
 
     // pega os elementos dentro da lista
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -36,6 +38,10 @@ class AdapterRecycleViewCategoria(val context: Context, var categorias : ArrayLi
             clickCategoria.clickCategoria(categoria)
         }
 
+        if(position == getItemCount() - 1){
+            ultimoItemRecycleView.ultimoItemRecycleView(true)
+        }
+
     }
 
     // tamanho da lista
@@ -45,6 +51,11 @@ class AdapterRecycleViewCategoria(val context: Context, var categorias : ArrayLi
 
     interface ClickCategoria {
         fun clickCategoria(categoria: Categoria)
+        fun onClose(): Boolean
+    }
+
+    interface UltimoItemRecycleView{
+        fun ultimoItemRecycleView(isExibido: Boolean)
     }
 
 }
