@@ -212,7 +212,6 @@ class StorageUploadActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-
     // busca imagem de forma direta e obtem URL da imagem
     private fun uploadImage3() {
 

@@ -1,5 +1,6 @@
 package br.arc_camp.firebaseactivity.firestore_lista_categoria
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
@@ -9,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.arc_camp.firebaseactivity.R
 import br.arc_camp.firebaseactivity.databinding.ActivityFirestoreListaCategoriaBinding
+import br.arc_camp.firebaseactivity.firestore_lista_item.FirestoreListaItemActivity
 import com.br.jafapps.bdfirestore.util.DialogProgress
 import com.br.jafapps.bdfirestore.util.Util
 import com.google.firebase.firestore.CollectionReference
@@ -37,6 +39,8 @@ class FirestoreListaCategoriaActivity : AppCompatActivity(), View.OnClickListene
         setContentView(binding.root)
 
         binding.buttonFirestoreListaCategorias.setOnClickListener(this)
+
+        supportActionBar?.title = "Categorias"
 
         database = FirebaseFirestore.getInstance()
         reference = database.collection("Categorias")
@@ -121,8 +125,11 @@ class FirestoreListaCategoriaActivity : AppCompatActivity(), View.OnClickListene
     }
 
     override fun clickCategoria(categoria: Categoria) {
-        Util.exibirToast(this, categoria.nome.toString())
-        Util.exibirToast(this, categoria.id.toString())
+        var intente = Intent(this, FirestoreListaItemActivity::class.java)
+        intente.putExtra("categoriaNome", categoria)
+        startActivity(intente)
+        //Util.exibirToast(this, categoria.nome.toString() + categoria.id.toString())
+
     }
 
     // ultimo item exibido

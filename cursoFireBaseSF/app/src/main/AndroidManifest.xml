@@ -19,6 +19,9 @@
         android:theme="@style/Theme.FireBaseActivity"
         tools:targetApi="31">
         <activity
+            android:name=".firestore_lista_item.FirestoreListaItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".firestore_lista_categoria.FirestoreListaCategoriaActivity"
             android:exported="false" />
         <activity
