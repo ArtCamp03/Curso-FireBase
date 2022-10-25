@@ -57,16 +57,11 @@ class AberturaActivity : AppCompatActivity(), View.OnClickListener {
         val senha = binding.editLoginSenha.text.toString()
 
         if(!email.trim().equals("") && !senha.trim().equals("")){
-
             if(Util.statusInternet(this)){
-
                 login(email, senha)
-
-
             }else{
                 Toast.makeText(this,"Falha com a conexao !!", Toast.LENGTH_SHORT).show()
             }
-
             //Toast.makeText(this, "Email : ${email} " + "Senha : " + senha, Toast.LENGTH_SHORT).show()
         }else{
             Toast.makeText(this," Usuario ou senha invalidos", Toast.LENGTH_SHORT).show()

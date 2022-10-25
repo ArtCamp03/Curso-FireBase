@@ -219,11 +219,9 @@ class FirestoreListaCategoriaActivity : AppCompatActivity(), View.OnClickListene
                     val categoria = document.toObject(Categoria::class.java)
                     categorias.add(categoria)
                 }
-
                 adapterRecycleViewCategoria?.notifyDataSetChanged()
             }.addOnFailureListener{
                 Util.exibirToast(this, "nenhum Item encontrado !")
-
         }
 
     }

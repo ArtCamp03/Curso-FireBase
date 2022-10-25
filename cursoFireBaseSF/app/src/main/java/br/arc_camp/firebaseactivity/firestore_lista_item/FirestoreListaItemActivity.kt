@@ -47,8 +47,6 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
 
         database = FirebaseFirestore.getInstance()
 
-        //Util.exibirToast(this, categoria.nome.toString() + "-" +categoria.id.toString())
-
         binding.buttonFirestoreItemSalvar.setOnClickListener(this)
         binding.imageviewFirestoreLimparItem.setOnClickListener(this)
         binding.imageViewFirestoreGaleria.setOnClickListener(this)
@@ -65,17 +63,14 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
 
             R.id.button_firestore_item_salvar -> {
                 buttonSalvar()
-                // Util.exibirToast(this, "Salvar !!")
             }
 
             R.id.imageview_firestore_limpar_item -> {
                 limparCampos()
-                // Util.exibirToast(this, "Limpar !!")
             }
 
             R.id.imageView_firestore_galeria -> {
                 obterImageGallery()
-                // Util.exibirToast(this, "Galeria !!")
             }
 
             else -> return
@@ -83,7 +78,11 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun clickItem(item: Item) {
-        Util.exibirToast(baseContext, item.nome.toString())
+        // Util.exibirToast(baseContext, item.nome.toString())
+        val intente = Intent(this,FirestoreItemDadosActivity::class.java)
+        intente.putExtra("idCategoria", categoria.id)
+        intente.putExtra("item", item)
+        startActivity(intente)
     }
 
     // resposta da chamada de galeria
@@ -120,11 +119,6 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
             if (error != null) {
                 Util.exibirToast(baseContext, "Erro ao ler dados: ${error}")
             }else {
-
-                if (documentos!!.size() > 0) {
-                    Util.exibirToast(baseContext, "Itens nao encontrados: ${error}")
-                }
-
                 for (doc in documentos!!.documentChanges) {
                     when (doc.type) {
                         DocumentChange.Type.ADDED -> {
@@ -204,7 +198,9 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "1")
 
-        var nomeImg = System.currentTimeMillis().toString() + ".jpg"
+        val idItem = System.currentTimeMillis().toInt()
+
+        val nomeImg = "$idItem.jpg"
 
         // local para armazenamento da imagem
         val reference = storage.reference.
@@ -230,8 +226,7 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
             var url = task.toString()
             dialogProgress.dismiss()
 
-            salvarDados(nome, descricao, url)
-            //Util.exibirToast(baseContext, "Sucesso ao realizar upload da imagem")
+            salvarDados(nome, descricao, url, idItem)
         }.addOnFailureListener { error ->
 
             dialogProgress.dismiss()
@@ -252,12 +247,13 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
 
     }
 
-    private fun salvarDados(nome:String, descricao:String, url:String){
+    private fun salvarDados(nome:String, descricao:String, url:String, idItem:Int){
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "0")
 
-        var nomeDocumento = System.currentTimeMillis().toInt()
+        //var nomeDocumento = System.currentTimeMillis().toInt()
 
+        val nomeDocumento = idItem
         val reference = database!!.collection("Categorias").document(categoria?.id.toString()).collection("itens")
         val item = Item(nomeDocumento,nome, descricao, url)
 
