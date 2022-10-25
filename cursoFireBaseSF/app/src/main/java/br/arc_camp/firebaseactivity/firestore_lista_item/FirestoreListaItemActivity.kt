@@ -182,7 +182,8 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
         if(!nome.trim().isEmpty() && !descricao.trim().isEmpty()){
             if(Util.statusInternet(this)){
                 if(uri_imagem != null){
-                    uploadImagem(nome, descricao)
+                    //uploadImagem(nome, descricao)
+                    verificarDocuemnto(nome, descricao)
                 }else{
                     Util.exibirToast(this, "selecione uma imagem")
                 }
@@ -194,11 +195,39 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    private fun uploadImagem(nome:String, descricao:String){
+    private fun verificarDocuemnto(nome:String, descricao:String){
+        val idItem = System.currentTimeMillis().toInt()
+
+        val reference = database!!.collection("Categorias").
+        document(categoria?.id.toString()).
+        collection("itens").document(idItem.toString())
+
+        reference.get().addOnSuccessListener { documento ->
+            if(documento.exists()){
+                Util.exibirToast(baseContext, "ERRO identificaçao ja existente !!")
+            }else{
+                uploadImagem(nome, descricao, idItem)
+            }
+        }
+    }
+
+    // cria id de formas normal
+    private fun verificarDocuemnto2(nome:String, descricao:String){
+
+        val idItem: String = database!!.collection("Categorias").
+        document(categoria?.id.toString()).
+        collection("itens").document().id
+
+        uploadImagem(nome, descricao, idItem.toInt())
+
+    }
+
+
+    private fun uploadImagem(nome:String, descricao:String, idItem: Int){
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "1")
 
-        val idItem = System.currentTimeMillis().toInt()
+        //val idItem = System.currentTimeMillis().toInt()
 
         val nomeImg = "$idItem.jpg"
 
