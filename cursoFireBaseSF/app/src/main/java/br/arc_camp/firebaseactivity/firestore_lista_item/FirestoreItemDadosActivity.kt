@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import br.arc_camp.firebaseactivity.R
 import br.arc_camp.firebaseactivity.databinding.ActivityFirestoreItemDadosBinding
 import com.br.jafapps.bdfirestore.util.DialogProgress
@@ -17,6 +17,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -156,10 +157,14 @@ class FirestoreItemDadosActivity : AppCompatActivity(), View.OnClickListener {
 
         val nomeImg = itemSelecionado?.id.toString() + ".jpg"
 
+        val uid = Firebase.auth?.currentUser?.uid
+
         // local para armazenamento da imagem
         val reference = storage.reference.
         child("Categorias").
         child(idCategoria.toString()).
+        child("usuarios").
+        child(uid!!).
         child("itens").
         child(nomeImg)
 
@@ -194,8 +199,13 @@ class FirestoreItemDadosActivity : AppCompatActivity(), View.OnClickListener {
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "0")
 
-        val reference = bd.collection("Categorias").document(idCategoria.toString()).
-                collection("itens")
+        val uid = Firebase.auth?.currentUser?.uid
+
+        val reference = bd.collection("Categorias").
+        document(idCategoria.toString()).
+        collection("usuarios").
+        document(uid!!).
+        collection("itens")
 
         val item = hashMapOf<String, Any>(
            // "id" to itemSelecionado?.id!!,
@@ -235,7 +245,12 @@ class FirestoreItemDadosActivity : AppCompatActivity(), View.OnClickListener {
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "0")
 
-        val reference = bd!!.collection("Categorias").document(idCategoria.toString()).
+        val uid = Firebase.auth?.currentUser?.uid
+
+        val reference = bd!!.collection("Categorias").
+        document(idCategoria.toString()).
+        collection("usuarios").
+        document(uid!!).
         collection("itens")
 
         reference.document(idItem.toString()).delete().addOnSuccessListener {

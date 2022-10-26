@@ -14,6 +14,7 @@ import br.arc_camp.firebaseactivity.firestore.Gerente
 import br.arc_camp.firebaseactivity.firestore_lista_categoria.Categoria
 import com.br.jafapps.bdfirestore.util.DialogProgress
 import com.br.jafapps.bdfirestore.util.Util
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -108,8 +109,13 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "1")
 
-        reference = database!!.collection("Categorias").document(categoria?.id.toString())
-            .collection("itens")
+        val uid = Firebase.auth?.currentUser?.uid
+
+        reference = database!!.collection("Categorias").
+        document(categoria?.id.toString()).
+        collection("usuarios").
+        document(uid!!).
+        collection("itens")
 
         // atualiza e mostra qualquer alteraçao feita dentro do documento presente na variavel refence
         reference?.addSnapshotListener { documentos, error ->
@@ -183,7 +189,7 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
             if(Util.statusInternet(this)){
                 if(uri_imagem != null){
                     //uploadImagem(nome, descricao)
-                    verificarDocuemnto(nome, descricao)
+                    verificarDocuemnto3(nome, descricao)
                 }else{
                     Util.exibirToast(this, "selecione uma imagem")
                 }
@@ -200,7 +206,30 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
 
         val reference = database!!.collection("Categorias").
         document(categoria?.id.toString()).
+        collection("usuarios").document(idItem.toString()).
         collection("itens").document(idItem.toString())
+
+        reference.get().addOnSuccessListener { documento ->
+            if(documento.exists()){
+                Util.exibirToast(baseContext, "ERRO identificaçao ja existente !!")
+            }else{
+                uploadImagem(nome, descricao, idItem)
+            }
+        }
+    }
+
+
+    private fun verificarDocuemnto3(nome:String, descricao:String){
+        val idItem = System.currentTimeMillis().toInt()
+
+        val uid = Firebase.auth?.currentUser?.uid
+
+        val reference = database!!.collection("Categorias").
+        document(categoria?.id.toString()).
+        collection("usuarios").
+        document(uid!!).
+        collection("itens").
+        document(idItem.toString())
 
         reference.get().addOnSuccessListener { documento ->
             if(documento.exists()){
@@ -222,12 +251,13 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
 
     }
 
-
     private fun uploadImagem(nome:String, descricao:String, idItem: Int){
         val dialogProgress = DialogProgress()
         dialogProgress.show(supportFragmentManager, "1")
 
         //val idItem = System.currentTimeMillis().toInt()
+
+        val uid = Firebase.auth?.currentUser?.uid
 
         val nomeImg = "$idItem.jpg"
 
@@ -235,6 +265,8 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
         val reference = storage.reference.
         child("Categorias").
         child(categoria?.id.toString()).
+        child("usuarios").
+        child(uid!!).
         child("itens").
         child(nomeImg)
 
@@ -282,8 +314,15 @@ class FirestoreListaItemActivity : AppCompatActivity(), View.OnClickListener,
 
         //var nomeDocumento = System.currentTimeMillis().toInt()
 
+        val uid = Firebase.auth?.currentUser?.uid
+
         val nomeDocumento = idItem
-        val reference = database!!.collection("Categorias").document(categoria?.id.toString()).collection("itens")
+        val reference = database!!.collection("Categorias").
+        document(categoria?.id.toString()).
+        collection("usuarios").
+        document(uid!!).
+        collection("itens")
+
         val item = Item(nomeDocumento,nome, descricao, url)
 
         reference.document(nomeDocumento.toString()).set(item).addOnSuccessListener {
